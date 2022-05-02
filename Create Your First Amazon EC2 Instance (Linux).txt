@@ -13,9 +13,9 @@ The AWS Management Console is a web control panel for managing all your AWS reso
 
 Enter the following credentials created just for your lab session, and click Sign in:
 
-Account ID or alias: 708187052058
-IAM user name: student
-Password: Ca1_NMnLbovS
+Account ID or alias: 
+IAM user name: 
+Password: 
 
 3. Select the US West (Oregon) us-west-2 region using the upper-right drop-down menu on the AWS Management Console:
 

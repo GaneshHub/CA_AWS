@@ -1,8 +1,8 @@
 Enter the following credentials created just for your lab session, and click Sign in:
 
-Account ID or alias: 517112481022
-IAM user name: student
-Password: Ca1_ekN6eKVE
+Account ID or alias: 
+IAM user name: 
+Password: 
 
 Creating an IAM User Group:
 ==========================

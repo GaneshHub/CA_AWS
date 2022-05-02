@@ -236,8 +236,8 @@ The user John has a different set of permissions than Jeff. John is not authoriz
 
 6. In your SSH session enter these commands:
 
-export AWS_ACCESS_KEY_ID=AKIAW6N6U6BKQRVRN2NK
-export AWS_SECRET_ACCESS_KEY=S39nKZPBCcUv50XD3PDVUayygtvVV320hQt2Ney/
+export AWS_ACCESS_KEY_ID=
+export AWS_SECRET_ACCESS_KEY=/
 
 This will configure the EC2 instance for the user, John. The EC2 instance will use the provided security credentials and override the instance profile set to the instance.
 
