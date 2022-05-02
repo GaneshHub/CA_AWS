@@ -1,0 +1,221 @@
+Description:
+==============
+Amazon Elastic Compute Cloud (EC2) is one of the most popular AWS services. EC2 allows you to launch different types of cloud instances and pay for them with a pay-per-use model. EC2 allows you to have operating system level control of your computing resources while running in Amazon’s computing environment. Amazon EC2 reduces the time required to obtain and boot new server instances from days or weeks to minutes. This allows you to quickly scale capacity, both up and down, as your computing requirements change. Amazon EC2 allows you to build and configure your instances as you like, from your desired operating system to your applications.
+
+By completing this Hands-on Lab, you will be able to launch and configure your first Amazon EC2 instance using the AWS Management Console.
+
+
+Logging in to the Amazon Web Services Console:
+=============================================
+Introduction
+This lab experience involves Amazon Web Services (AWS), and you will use the AWS Management Console to complete all the lab steps.
+The AWS Management Console is a web control panel for managing all your AWS resources, from EC2 instances to SNS topics. The console enables cloud management for all aspects of the AWS account, including managing security credentials and even setting up new IAM Users.
+
+Enter the following credentials created just for your lab session, and click Sign in:
+
+Account ID or alias: 708187052058
+IAM user name: student
+Password: Ca1_NMnLbovS
+
+3. Select the US West (Oregon) us-west-2 region using the upper-right drop-down menu on the AWS Management Console:
+
+Amazon Web Services is available in different regions all over the world, and the console lets you provision resources across multiple regions. You usually choose a region that best suits your business needs to optimize your customer’s experience, but you must use the US West 2 for this Lab.
+
+Creating an EC2 Instance:
+=========================
+1. In the AWS Management Console search bar, enter EC2, and click the EC2 result under Services:
+2. Since this may be your first exposure to the EC2 Dashboard, it's worth spending a minute or two learning a few important parts of the dashboard:
+
+From left to right, top to bottom:
+
+Additional navigation options are across the top-left of the Dashboard
+Basic account information, current region, and Support options are across the top-right
+Navigation to additional EC2 resources and features are located in the left pane
+Resources section - provides a high-level summary of current EC2 resource usage
+Launch Instance section - Offers a single click to start the process of launching a new EC2 instance (you'll do that next)
+Service Health section - Simple and quick way to obtain the high-level service health in your region (or click Service Health Dashboard for a more comprehensive AWS health check)
+Additional Information - Context sensitive help on Getting Started (with EC2) or a complete listing of all AWS documentation
+
+
+3. Click Launch Instance.
+
+A seven-step wizard is started. That may sound like a lot, but don't worry... the instructions will guide you through the basics for each step.
+
+Note: If you encounter the new launch experience, click Opt-out to the old experience at the top of the page to ensure a consistent experience for this lab:
+
+4. Click the top Select button to choose the Amazon Linux 2 AMI (Amazon Machine Image):
+
+As you can see, Amazon provides many AMIs, including the most popular versions of Linux and Windows, often in 32-bit and 64-bit variants. Look at the supporting text to find out what other software packages and development languages are already installed on the image (such as Perl, Python, Java, etc.). You can think of AMIs as the blueprint or DNA of the instance you plan to launch.
+
+5. On the Choose an Instance Type page, you should not change any options. Simply make sure the default t2.micro is selected:
+
+For whatever Instance Type is selected, the Currently selected list provides a helpful summary of hardware resources (such as the CPU type, number of virtual CPUs, and memory).
+
+6. Click Next: Configure Instance Details when ready to continue.
+
+Tip: There are Previous and Next buttons in the wizard for additional navigation options as you configure your instance.
+
+You can configure many different options on this page of the wizard, but it's best to keep your first launch simple. Skim the different fields, but leave the default values. If you are particularly interested in any particular field, hover over the i information icon next to it for a basic description.  The information icon is a useful feature for easing your learning curve while using the AWS Console. In many cases, the help text also includes a link to related documentation. To summarize a few key points:
+
+You will launch a single instance
+The Cloud Academy Lab environment has created a default VPC (Virtual Private Cloud) for you to launch your instance into
+The EC2 service will launch the instance into one of several subnets in the US West (Oregon) region
+
+7. Click Next: Add Storage.
+
+The Add Storage page enables you to further configure storage options:
+
+The default values work fine here too. There is no need to add additional volumes, encrypt volumes, or change any other settings. Simply note this is where you can change storage settings if needed.
+
+8. Click Next: Add Tags when ready.
+
+ The Add Tags page provides a helpful way to organize your EC2 instances:
+
+ Tags are specified as Key/Value pairs. They are not mandatory although it is useful to tag all of your AWS resources in production environments to stay organized. You can leave the tags empty for this Lab.
+
+ 9. Click Next: Configure Security Group when ready. 
+
+Read the supporting text near the top of the Configure Security Group page of the wizard:
+
+The Warning from AWS is letting you know the default configuration for the security group that is about to be created will grant SSH access from any source IP address (0.0.0.0/0). Production environments should be more restrictive. For the purposes of this Lab, this configuration is fine.
+
+Tip: A handy feature for testing purposes is to select My IP from the Source drop-down. That will restrict SSH access to only your current IP address. In network environments with Dynamic Host Configuration Protocol (DHCP), multiple routers or firewalls, and other features that make IP addresses subject to change, this setting is not a permanent security feature. However, it is sometimes a helpful feature while you perform various tests using your EC2 instance.
+
+ spend a few minutes expanding/collapsing the various sections on the Review Instance Launch page of the wizard:
+
+ Be sure to look over the Instance Type, Instance Details and Storage sections. You do not need to change any of these settings at this point, but it's helpful to learn the type of information and configuration options available.
+
+ 
+
+11. Click Launch when ready.
+
+12. In the Select an existing key pair or create a new key pair dialog box, select Create a new key pair. Enter keypair for the Key pair name, keep the default value for Key pair type, and then click Download Key Pair:
+
+The download will create a file named keypair.pem on your local system. It contains a private key that you can use to connect to the EC2 instance via SSH. 
+
+13. Click Launch Instances. A confirmation page will let you know that your instance is launching.
+
+14. Click the View Instances button (lower right) to close the confirmation page and return to the Instances screen of the EC2 console.
+
+You can view the status of your instance on the Instances screen of the EC2 console:
+
+The Details tab contains a wealth of information on your instance. When you launch an instance, its initial Instance state defaults to Pending. After the instance starts, its Instance state transitions to Running, and it receives a Public IPv4 address and Public IPv4 DNS name. It typically takes about 30 seconds for the AWS Linux instance to transition to a running state.
+
+Congratulations...you just launched your first EC2 instance!
+
+Converting a PEM Key to a PPK Key (Windows Users Only):
+=======================================================
+Note: This step is only required for Windows users. If you are using Mac or Linux you can directly use the PEM file you downloaded. Proceed to the next lab step if you are running Mac or Linux.
+
+Connecting to a running Linux instance using an SSH client requires a public/private key pair. Windows does not ship with an SSH client. PuTTY is a common SSH client, which is free to download and use. However, PuTTY does not support the PEM (Privacy Enhanced Mail) key format. The key downloaded from AWS is PEM format, so it must be converted to PPK (PuTTY Private Key). Fortunately, PuTTYgen converts PEM key files to PPK format. PuTTYgen is also free to download and use.
+
+Instructions
+1. If you do not already have PuTTYgen, download the PuTTYgen executable from the following link: PuTTYgen.
+
+Note: Cloud Academy enterprise accounts also provide an enterprise bridge feature that allows you to bypass corporate network and software installation policies that may otherwise prevent you from completing this lab step.
+
+2. Start PuTTYgen. (no installation is required)
+
+5. Click OK. PuTTYgen displays a dialog with information about the key you loaded, including the public key and the fingerprint.
+
+ 
+
+6. Click Save private key to save the key in PuTTY's format. Do NOT select a passphrase. (Additional security is not required.) Be sure to save your private key somewhere secure.
+
+Connecting to an Instance using SSH
+======================================
+Introduction
+In order to manage a remote Linux server, you must employ an SSH client. Secure Shell (SSH) is a cryptographic network protocol for securing data communication. It establishes a secure channel over an insecure network. Common applications include remote command-line login and remote command execution.
+
+Linux distributions and macOS ship with a functional SSH client that accepts standard PEM keys. Windows does not ship with an SSH client. Therefore, this Lab Step includes instructions for users running Linux/macOS and Windows on their local host. Only one of them is required depending on your local operating system.
+
+Instructions (Linux / macOS Users)
+1. Open your Terminal application
+
+ 
+
+2. Run the following ssh command: 
+
+Copy code
+ssh -i /path/to/your/keypair.pem user@server-ip
+server-ip is the Public IP of your server, found on the Description tab of the running instance in the EC2 Console
+user is the remote system user (ec2-user for Amazon Linux) that will be used for the remote authentication. In this Lab, you must use ec2-user.
+Note that the Amazon Linux AMIs typically use ec2-user as a username. Other popular Linux distributions use the following user names:
+
+Debian: admin
+RedHat: ec2-user
+Ubuntu: ubuntu
+Assuming that you selected the Amazon Linux AMI, your assigned public IP is 123.123.123.123, and your keypair (named "keypair.pem") is stored in /home/youruser/keypair.pem, the example command to run is: 
+
+ssh -i /home/youruser/keypair.pem ec2-user@123.123.123.123
+
+Note: You can find the Public IP under the AWS EC2 console, and choosing the available EC2 instance.
+
+Important! Your SSH client may refuse to start the connection, warning that the key file is unprotected. You should deny the file access to any other system users by changing its permissions. From the directory where the public key is stored on your local machine, issue the following command and then try again:
+
+chmod 400  /home/youruser/keypair.pem
+
+The change mode (chmod) command shown above will change the permissions on your private key file so only you can read it. No other users on the system can modify it, or even read it.
+
+Tip: The Instances page provides a helpful shortcut for connecting to a Linux instance. Select the running instance and click the Connect button. It will formulate an example ssh command for you, including the required key name and public IP address. However, it is still useful to learn the basics of manually using the ssh command.
+
+Instructions (Windows Users)
+Windows has no SSH client, so you must install one. This part of the Lab Step will use PuTTY (freely available here on their website) and a previously converted PEM key (converted to PPK using PuTTYgen).
+
+1. Open PuTTY and insert the EC2 instance public IP Address in the Host Name field:
+
+Note: You can find the Public IP under the AWS EC2 console, and choosing the available EC2 instance.
+
+2. Navigate to Connection > SSH > Auth in the left pane and then select the downloaded private key in PPK format:
+
+After a few seconds, you will see the authentication form.
+
+Note: The checked boxed in the red highlight needs to be checked.
+
+ 
+
+3. Login as ec2-user and you will see the EC2 server welcome banner and be placed in the Linux shell:
+
+Getting the EC2 Instance Metadata
+================================
+ntroduction
+Now you are ready to send the first commands to your EC2 Linux instance. In this Lab Step you will check the EC2 instance metadata, which is only available from within the instance itself. Instance metadata is data about your instance that you can use to configure or manage the running instance. In order to obtain the instance metadata you will use the curl utility. cURL (Client URL) is a free, open-source project, and already loaded on your instance. cURL is a great way to transfer data using one of its supported protocols (such as HTTP).
+
+Note: The IP address used below (169.254.169.254) is a special use address to return metadata information tied to EC2 instances.
+
+ 
+
+Instructions
+1. List all instance metadata by issuing the following command:
+curl -w "\n" http://169.254.169.254/latest/meta-data/
+
+to extract specific metadata append keywords to the end of the http path URL provided in the curl request. For example, you can easily check the list of security groups attached to the instance, its ID, the hostname, or the AMI ID. The "-w" command-line option tells curl to write the output to standard output (STDOUT).
+
+curl -w "\n" http://169.254.169.254/latest/meta-data/security-groups
+curl -w "\n" http://169.254.169.254/latest/meta-data/ami-id
+curl -w "\n" http://169.254.169.254/latest/meta-data/hostname
+curl -w "\n" http://169.254.169.254/latest/meta-data/instance-id
+curl -w "\n" http://169.254.169.254/latest/meta-data/instance-type
+
+3. Enter the following command to get the public SSH key of the attached key pair using the public-keys metadata:
+
+curl -w "\n" http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key
+
+Terminating an EC2 Instance
+===========================
+AWS bills EC2 usage per second in most cases. Although the Cloud Academy lab engine will clean up this lab environment for you, it's good to learn how to stop or terminate an instance from the AWS console. When you are sure that you no longer need an instance, you can terminate it. The specific instance and the data on the root volume (system disk) is not recoverable (by default) however. So be sure you don't need it before terminating an instance. If you stop an instance, you can start it again later (and access data on all the disks). In this lab step you will terminate a running EC2 instance.
+
+Instructions
+1. Return to the EC2 console in your browser.
+
+ 
+
+2. Click Instances in the left navigation pane. Select the running instance, then click the dropdown menu at the top middle of the page Instance State > Terminate instance.
+
+3. Read the Warning from AWS, then click the Terminate button in the Terminate Instances confirmation dialog:
+
+. Watch as the Instance State transitions from running to shutting-down and finally to terminated:
+
+Your instance and the data stored on its root volume are completely destroyed. 
+
+In this lab step, you terminated your running EC2 Linux instance. Any open connections to the instance were severed.  You learned more about the state of your instance as it transitions, along with the main difference between stopping and terminating an instance.
