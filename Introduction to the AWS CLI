@@ -1,0 +1,309 @@
+The AWS Command Line Interface (CLI) is a unified tool to manage your AWS services. With just one tool to download and configure, you can control multiple AWS services from the command line and automate them through scripts.
+
+During this Lab, you will learn how to configure the AWS CLI, leverage the built-in help tool, and set up an S3 website using the AWS CLI.
+
+By the end of this Lab, you should be able to:
+
+Configure the AWS CLI
+Use the AWS CLI help to get more information
+Create an S3 bucket with the AWS CLI
+Send files from your local machine to S3 buckets using the AWS CLI
+Configure static website hosting on Amazon S3 using the AWS CLI
+
+Logging in to the Amazon Web Services Console
+
+Creating an Access Key:
+========================
+Introduction
+To use the AWS CLI from your local machine or a server outside the AWS cloud you need to create some Access Keys for the user in order to authenticate the requests to the CLI.
+
+Access keys consist of an access key ID and secret access key, which are used to sign programmatic requests that are made to AWS. If you don't have access keys, you can create them by using the AWS Management Console.
+
+Instructions
+1. In the search bar at the top of the AWS Management Console, enter IAM, and under Services, click the IAM result:
+2. To begin creating an access key, in the left-hand menu, click Users, and then click the student user:
+The student IAM user has been created for you to use in this lab.
+
+Warning: You may encounter warning and error notifications about missing permissions. They can be safely ignored. You only have the permissions required to complete the lab.
+
+The Summary page for the student user will load:
+
+3. Click the Security credentials tab, and click the Create access key button:
+A new access key will be created and you will see a modal displaying the Access key ID and the Secret access key:
+
+4. Under Secret access key, click Show.
+
+The secret access key is sensitive. Anyone with IAM access in the AWS account can see your Access key ID. However, only you are given the Secret access key when you create a new access key.
+
+
+
+5. To save the Access key ID and Secret accces key, click Download .csv file.
+
+Your web browser will download a file containing both the ID and the secret.
+
+If you don't save the Secret access key after creating a new access key, then there is no way to retrieve it. In these situations, you would need to create a new access key for the user.
+
+Access key credentials should be securely stored. Anyone who has a copy of both the ID and secret can perform any action that the user is allowed to programmatically using the AWS command-line interface (CLI) or AWS software development kit (SDK).
+
+n this lab, storing the credentials in the downloaded text file is acceptable. In many organizations, strict rules around handling sensitive credentials may apply.
+
+Connecting to an EC2 Instance Using Amazon EC2 Instance Connect:
+===============================================================
+ntroduction
+
+In this lab step, you will connect to an Amazon EC2 instance named AWS CLI VM using your web browser and Amazon EC2 Instance Connect.
+
+  
+
+Instructions
+1. In the AWS Management Console search bar, enter EC2, and click the EC2 result under Services:
+
+2. To see available instances, click Instances in the left-hand menu:
+The instances list page will open, and you will see an instance listed named AWS CLI VM listed:
+
+If you don't see a running instance then the lab environment is still loading. Wait until the Instance state is Running before proceeding.
+
+ 
+
+3. Right-click the instance named AWS CLI VM, and click Connect:
+
+The Connect to your instance form will load.
+
+ 
+
+4. In the form, ensure the EC2 Instance Connect tab is selected:
+
+You will see the instance's Instance ID and Public IPv4 address displayed.
+
+ 
+
+5. In the User name textbox, enter ec2-user.
+6. To connect to the instance using a browser-based shell, click Connect:
+If you see an error it's likely that the environment hasn't finished setting up. Check for Setup completed at the top-left corner of the lab, wait a minute, and try connecting again:
+
+A browser-based shell will open in a new window
+You can also connect to the instance using your preferred SSH client and the PPK (Windows) or PEM (Mac/Linux) key files in the Credentials section of this lab.
+
+Configuring the AWS CLI:
+=========================
+Introduction
+Before you can start using the AWS CLI, it needs to know who is running the commands to understand what commands you are authorized to execute. In this Lab Step, you will configure the AWS CLI using the student user access key you recorded in a previous Lab Step.
+
+Note: The virtual machine for this Lab runs the Amazon distribution of Linux, which pre-installs the AWS CLI. The AWS CLI can easily be installed on many different platforms. If you want to know more about the install options visit the documentation page. You can also configure multiple profiles for the AWS CLI. To learn how, refer to the documentation after completing this Lab.
+
+Instructions
+1. Enter the following command to check what version is installed:
+aws --version
+
+2. To start configuring enter: aws configure
+
+The AWS CLI can be configured in several ways, but you will use the quick configure command provided by the CLI itself. The command will start a wizard where you can enter key information that will be used as the default for all commands you issue with the AWS CLI.
+
+3. Enter the following values to the wizard prompts:
+
+AWS Access Key ID: Enter the Access Key ID you recorded in an earlier Lab Step
+AWS Secret Access Key: Enter the Secret Access Key you recorded in an earlier Lab Step
+Default region name: us-west-2 (The AWS region your commands will apply to when no region is specified)
+Default output format: text (The default output format to use when no format is specified. Allowable values are text, json, and table) 
+
+JSON is best for handling the output programmatically via various languages or jq (a command-line JSON processor). Text will return some basic text with tab-delimited values. The table format is easy for humans to read, but more difficult to deal with programmatically. Text format works well with traditional Unix text processing tools, such as sed, grep, and awk, as well as Windows PowerShell scripts.
+
+4. Test that the AWS CLI is configured by entering the following command:
+ aws ec2 describe-regions
+Without configuring the AWS CLI, this command would not be allowed because the CLI doesn't know who is running the command and permission would not be granted.
+
+5. To test that the credentials are required, enter the following:
+
+mv ~/.aws/credentials .
+aws ec2 describe-regions
+
+You have moved the credentials file to your home directory and re-run the previous AWS CLI command to describe EC2 regions.
+
+This time you will see an error:
+
+The aws configure command you ran earlier stored the credentials in a file with the path .aws/credentials. The AWS CLI looks for credentials to use in several places, this path is one of them.
+
+
+
+6. Restore the credentials by issuing:
+
+mv credentials ~/.aws/
+
+Summary
+In this lab step, you configured the AWS CLI to run commands as the student user by using the student's access key. You also assigned a default region and format for AWS CLI commands.
+
+Working with the AWS CLI:
+==========================
+Introduction
+Amazon provides a lot of excellent documentation for the AWS CLI. You will likely find yourself using one of the following to help with your learning curve:
+
+aws help (from the command line)
+AWS CLI Reference documentation  
+This lab step will focus on the command line help. (Bookmarking the reference information is helpful when you need to look something up but don't have the AWS CLI installed on your local machine or any EC2 instances.)
+
+Instructions
+1. From your SSH shell, enter the following command: aws help
+
+You can press enter to scroll down or q to quit. 
+
+2. Press enter until you can see the AVAILABLE SERVICES section:
+
+As you can see, in the aws help command there are many services available. Thus, the AWS CLI makes use of a common pattern for working with each service: aws <service> <command>. For example, aws ec2 describe-regions. 
+
+ 
+
+3. Follow the AWS CLI service pattern to get help on commands available for the EC2 service: 
+aws ec2 help
+
+The service help pages simply give a description and then list all of the available commands for the service.
+
+ 
+
+4. Get the help page for a specific command:
+aws ec2 describe-regions help
+Help pages for service commands provide additional sections for how to use the command:
+
+SYNOPSIS: Shows the usage of the command
+OPTIONS: Describes the options/arguments you can provide on the command-line to modify the behavior of the command
+EXAMPLES: Provides sample commands along with a text description of what the command accomplishes and the output the command produces
+OUTPUT: Describes the format of the output of the command
+ 
+
+5. Specify JSON output format appending --output json:
+aws ec2 describe-regions --output json
+
+Recall earlier that you defined text as your default output, so all the commands that support text output should return text. However, you can specify the desired output when entering a command by appending --output <type>.
+
+ 
+
+6. Display the output of the command in table format:
+aws ec2 describe-regions --output table
+
+7. Display the output in text format: aws ec2 describe-regions --output text
+
+Because you configured text as the default output format, you can omit the --output option and achieve the same result.
+
+ 
+
+8. Describe the VPCs in the default region us-west-2: aws ec2 describe-vpcs --output json
+
+Notice there are two VPCs in this region.
+
+ 
+
+9. Specify a different region by appending --region <region name>:
+
+aws ec2 describe-vpcs --region us-west-2 --output json
+
+This time, only one VPC is shown, the default VPC for the region. If you don't specify a region the AWS CLI will use the default region previously configured.
+
+ 
+
+10. Change your default format to JSON by entering aws configure by entering json for the format prompt and pressing enter to keep the existing value for the other options:
+
+try to find the command to describe all the instances in a particular region or list all S3 buckets that you have in your account.
+
+Operating Amazon S3 with the AWS CLI:
+======================================
+Introduction
+Now it is time to see the AWS CLI in action. At the end of this lab step, you will have a new S3 bucket with static website hosting enabled and several HTML files uploaded to it.
+
+ 
+
+Instructions
+1. Enter the following command to create a new S3 bucket in the account:
+aws s3 mb s3://ca-lab-ganesh-static-web-bucket
+
+ote: Make sure to use a separator, such as . or -, in the bucket name.
+
+ 
+
+2. List all the buckets in your account to verify the bucket exists:
+aws s3 ls
+3. Download and extract a zip file containing files for a static website:
+wget https://github.com/cloudacademy/static-website-example/archive/master.zip
+
+You will use the bundled files to demonstrate uploading a website to S3 from the AWS CLI.
+
+ 
+
+4. Unzip the HTML files:
+unzip master.zip
+The files are unzipped into a directory called static-website-example-master.
+
+ 
+
+5. Change into website directory: cd static-website-example-master
+6. Copy the index.html file to your bucket: aws s3 cp index.html s3://ca-lab-ganesh-static-web-bucket
+
+This command copies files from one place to another. In the above example, it copies files from your local computer to the specified S3 bucket. You can use this command to copy files from an S3 bucket to your machine, from your machine to an S3 bucket, or between S3 buckets. The usage is as follows: aws s3 cp <source> <destination>
+
+Note: Remember to start with s3:// to indicate a bucket, otherwise the command will look for files on your local machine.
+
+ 
+
+7. Add the --recursive option to recursively copy files in subdirectories, effectively copying all files in the directory and subdirectories:
+aws s3 cp . s3://ca-lab-ganesh-static-web-bucket --recursive
+
+8. List the files and directories in your s3 bucket by including the bucket name in the ls command: aws s3 ls s3://ca-lab-ganesh-static-web-bucket
+
+n the output, PRE indicates a prefix. Prefixes are treated as directories, although S3 doesn't really support directories. Rather, it treats prefixes on object/file names to indicate a directory structure.
+
+ 
+
+9. List the files in a particular directory inside your bucket including the path after the bucket name: 
+aws s3 ls s3://ca-lab-ganesh-static-web-bucket/assets/
+
+10. Append the --recursive option to the previous command to show all files/folders under a given directory/prefix: aws s3 ls s3://<UNIQUE_BUCKET_NAME>/assets/ --recursive
+
+11. Enable the S3 bucket for hosting a static website:
+ aws s3 website s3://ca-lab-ganesh-static-web-bucket --index-document index.html --error-document error/index.html
+
+ If you receive no output from the command it means that it worked.
+
+ 
+
+12. In a new browser tab, navigate to your bucket at the following address: http://ca-lab-ganesh-static-web-bucket.s3-website-us-west-2.amazonaws.com
+
+Access is denied, unless you explicitly specify all the files you send to a bucket have a public read access.
+
+ 
+
+13. Upload the files again, overwriting the current copies, and set the access control list (ACL) to be public-read:
+
+aws s3 cp . s3://ca-lab-ganesh-static-web-bucket --recursive --acl public-read
+
+14. Refresh your browser tab that is pointing to the bucket:
+
+Now that public read access has been set, the website can load successfully.
+
+ 
+
+Summary
+In this lab step, you used the AWS CLI to work with the Amazon S3 service. You created a bucket, uploaded files, set the bucket for website hosting, and configured public read access to all the files/objects in the bucket. Because the AWS CLI follows the same command service patterns, you are well-prepared to use the AWS CLI with any other service.
+
+ 
+
+Challenge (Optional)
+
+If you have time remaining in your Lab session, you are encouraged to explore a bit more. The copy (cp) command you used in the Lab is very useful, however, there is a better tool for keeping files in sync. Use the help tool with the aws s3 command and look for the documentation of the sync command and try it out.
+
+Validate AWS Lab:
+==================
+Validation Step
+In this Lab Step, checks run to validate the work you did in your Lab environment. To check the status of your work, click the Start Check button below. After the checks run, the Submit button is revealed. Click Submit to complete the Lab.
+
+If any checks fail alt, you can use the remaining time in the Lab to work on making the checks pass alt. Click Check again to rerun the checks at any time.
+
+
+
+
+
+
+
+
+
+
+
+
+ 
