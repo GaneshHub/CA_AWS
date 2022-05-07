@@ -1,0 +1,265 @@
+Description
+Amazon Simple Storage Service (S3) provides secure, durable, and highly scalable object storage. To upload data such as photos, videos, and static documents, you must first create a logical storage bucket in one of the AWS regions. Then you can upload any number of objects to it. Buckets and objects are resources, and Amazon S3 provides both APIs and a web console to manage them.
+
+Amazon S3 can be used alone or together with other AWS services such as Amazon EC2, Amazon Elastic Block Store (Amazon EBS), and Amazon Glacier, as well as third-party storage repositories and gateways. Amazon S3 provides cost-effective object storage for a wide variety of use cases including web applications, content distribution, backup and archiving, disaster recovery, and big data analytics.
+
+This lab guides you through the bucket creation process and its first usage. The Cloud Academy Labs Engine constantly checks the Lab environment, giving you instant feedback on your work.
+
+Logging in to the Amazon Web Services Console:
+==============================================
+The AWS Management Console is a web control panel for managing all your AWS resources, from EC2 instances to SNS topics. The console enables cloud management for all aspects of the AWS account, including managing security credentials and even setting up new IAM Users.
+2. Enter the following credentials created just for your lab session, and click Sign in:
+
+Account ID or alias: 854014963917
+IAM user name: student
+Password: Ca1_U1tWP8XR
+
+3. Select the US West (Oregon) us-west-2 region using the upper-right drop-down menu on the AWS Management Console:
+
+Amazon Web Services is available in different regions all over the world, and the console lets you provision resources across multiple regions. You usually choose a region that best suits your business needs to optimize your customer’s experience, but you must use the US West 2 for this Lab.
+
+Creating an Amazon S3 Bucket:
+===============================
+Introduction
+You can create an Amazon S3 bucket using the AWS Management Console. As with many other AWS services, you can use the AWS API or CLI (command-line interface) as well.
+
+In this lab step, you will create a new Amazon S3 bucket.
+Instructions
+1. In the AWS Management Console search bar, enter S3, and click the S3 result under Services:
+2. From the S3 console, click the orange Create Bucket button:
+3. Enter a unique Bucket name on the Name and region screen of the wizard:
+
+Important! Bucket names must be globally unique, regardless of the AWS region in which you create the bucket. Buckets must also be DNS-compliant.
+
+The rules for DNS-compliant bucket names are:
+
+Bucket names must be at least 3 and no more than 63 characters long.
+Bucket names can contain lowercase letters, numbers, periods, and/or hyphens. Each label must start and end with a lowercase letter or a number.
+Bucket names must not be formatted as an IP address (for example, 192.168.1.1).
+he following examples are valid bucket names: calabs-bucket-1, cloudacademybucket , cloudacademy.bucket , calabs.1 or ca-labs-bucket.
+
+Troubleshooting Tip: If you receive an error because your bucket name is not unique, append a unique number to the bucket name in order to guarantee its uniqueness:
+For example, change "calabs-bucket" to "calabs-bucket-1" (or a unique number/character string) and try again. 
+calabs-ganesh-bucket-1
+4. Leave the Block public access (bucket settings) at the default values:
+No changes are needed. This is where you can set public access permissions.
+5. Click on Create bucket:
+A page with a table listing buckets will load and you will see a green notification that your bucket was created successfully.
+
+ 6. In the Buckets table, click the name of your bucket in the Name column:
+ 7. To see details and options for your bucket, click on the Properties:
+
+ Creating a Folder inside an Amazon S3 Bucket:
+ ===============================================
+ Introduction
+The AWS S3 console allows you to create folders for grouping objects. This can be a very helpful organizational tool. However, in Amazon S3, buckets and objects are the primary resources. A folder simply becomes a prefix for object key names that are virtually archived into it.
+Instructions
+1. Return to the Buckets menu by clicking here, and click on the calabs-bucket you created earlier.
+2. Click Create folder:
+3. In the Folder name textbox, enter cloudfolder:
+4. Scroll to the bottom and click Create folder:
+The folder is created inside your S3 bucket:
+In this lab step, you created a folder that can help with organizing objects within an S3 bucket. A folder within a bucket can be helpful programmatically as well. For example, you can configure your application to output certain file types (such as PNG) to a specific folder name (image-output). 
+
+Uploading a File to Amazon S3:
+==============================
+Introduction
+When you upload a folder from your local system or another machine, Amazon S3 uploads all the files and subfolders from the specified local folder to your bucket. It then assigns a key value that is a combination of the uploaded file name and the folder name. In this lab step, you will upload a file to your bucket. The process is similar to uploading a single file, multiple files, or a folder with files in it.
+
+In order to complete this lab step, you have to upload the cloudacademy-logo.png file from your local file storage into an S3 folder you created earlier.
+
+Download the Cloud Academy logo from the following location: https://s3-us-west-2.amazonaws.com/clouda-labs/scripts/s3/cloudacademy-logo.png (If the image is not downloaded for you, simply right-click the image and select Save image as to download it to your local file system.)
+Instructions
+1. Click on the cloudfolder folder. You are placed within the empty folder in your S3 bucket:
+Note: Click the folder name itself, not the checkbox for the folder name. If you select the folder checkbox then upload a file, it will be placed above the folder (not inside it).
+
+ 
+
+2. Click the Upload button.
+3. Click Add Files:
+A file picker will appear.
+
+ 
+
+4. Browse to and select the local copy of cloudacademy-logo.png file that you downloaded earlier:
+The logo is added to the list of files that are ready to upload. You have several options at this point:
+
+Add more files
+Upload
+However, there is another method that some users prefer to add files for upload.
+4. Check the file and click on Remove:
+5. This time, rather than browsing to a file, drag and drop the logo file onto the wizard. The wizard adds it to the list of files to upload.
+
+ 6. Scroll to the bottom of the page and click Upload to upload the file:
+ You will see a blue notification that the file is uploading and then a green notification that the upload has been completed successfully.
+
+The file is placed in the folder in your bucket:
+
+Granting Public Access to an Amazon S3 Object:
+==============================================
+Introduction
+All uploaded files are private by default and can only be viewed, edited, or downloaded by you. In order to illustrate this point, complete the instructions below.
+
+Note: The terms "file" and "object" are often used interchangeably when discussing Amazon S3. Technically, Amazon S3 is an object-store. It is not a block storage device and does not contain a file system as your local computer does. However, files such as images, movies, and sound clips are often uploaded from your file system to Amazon S3.
+Instructions
+1. Click on the object you just uploaded to the S3 bucket.
+
+Take a look at the Object overview section:
+2. Under Object URL, right-click the link and open the URL in a new browser tab:
+
+ You will see an XML (eXtensible Markup Language) response telling you that access is denied for this object:
+ Note: The response may appear differently depending upon your web browser.
+
+Leave the browser tab open. You will return to it shortly.
+
+To allow public access to objects, you need to disable the default safety guards that prevent them from being made publicly accessible.
+
+ 3. To return to the bucket view, at the top of the page, click the name of your bucket in the bread crumb trail:
+
+ 4. Click the Permissions tab and click Edit in the Block public access section:
+ 5. Uncheck all of the options to allow all kinds of public access:
+ You should carefully consider anytime you allow public access to S3 buckets. AWS has implemented these security features to help prevent data breaches. For this lab, there is no sensitive data and you do want to allow public access.
+
+Poorly managed Amazon S3 permissions have been a contributing factor to many unauthorized data access events. AWS is making sure you understand the implications of allowing public access to an Amazon S3 bucket.
+6. At the bottom of the page, click Save changes:
+A confirmation dialog box will appear.
+
+ 
+
+7. Enter confirm in the confirmation dialog box and click Confirm:
+ou will see a green notification that the public access settings have been edited.
+
+Turning off Block all public access does not automatically make objects in an Amazon S3 bucket public. There are several ways of of explicitly granting public access including:
+
+Bucket policies
+IAM policies
+Access control lists
+Pre-signed URLs
+In this lab, you will use a bucket policy to grant public access to your Amazon S3 bucket.
+8. Scroll down to the Bucket policy section and click Edit:
+The Edit bucket policy page will load. Here you can specify a JSON (JavaScript Object Notation) policy to control access to your Amazon S3 bucket.
+9. Replace the contents of the Policy editor with the following:
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Effect": "Allow",
+      "Resource": "BUCKET_ARN/*",
+      "Principal": "*"
+    }
+  ]
+}
+This is a permissive policy that allows GetObject access to anyone. More restrictive policies are possible such as
+
+Restricting access to specific principals
+Allow cross AWS account access
+Using conditions to restrict access to a specific IP address
+Notice the Resource is currently "BUCKET_ARN/*",  which is causing an error.  We need to replace this with the ARN of the bucket we created:
+10. Click the copy icon under Bucket ARN and replace BUCKET_ARN in the value of the Resource key with the ARN you just copied :
+Note: Ensure that you preserve the /* at the end of the value. This means that the policy will apply to all objects inside the bucket recursively. Public access won't be granted if this is not present.
+12. At the bottom of the page, click Save changes:
+You will see a green notification that the bucket policy was edited.
+
+ 
+
+13. Return to the browser tab where access was denied and fresh the browser tab.
+
+You will see the response change from “Access Denied” to the logo: 
+Summary
+In this lab step, you made an object in S3 viewable to the public.
+
+This is a common use case, so AWS makes it fairly easy to make objects public. In some production environments, wide-open access to objects (images, video clips, etc.) is not desirable. There are much more granular permissions available on bucket objects, and you should always consider security implications when making objects public.
+
+For example, in your production environment, you may only want to grant read permissions to S3 objects in a specific bucket to EC2 instances you launch, not everyone on the Internet. Or, you may have a need for your customers to view objects, but prohibit downloads and editing, etc.
+
+Changing the Metadata of an Amazon S3 Object:
+===============================================
+Introduction
+Each object in Amazon S3 has a set of key/value pairs representing its metadata. There are two types of metadata: "System metadata" (for example, Content-Type and Content-Length) and custom "User metadata". User metadata is stored with the object and returned with it.
+
+As an example, you might have your own taxonomy for various images, such as “logo”, “screenshot”, “diagram”, "flowchart" and so on. In this lab step, you will change the Content-Type of your image to "text/plain". You will also create custom user metadata.
+
+Note: With the new Amazon S3 UI you can set the metadata as part of the upload process, or add it later.
+1. Return to the cloudfolder/ and delete the cloudacademy-logo.png from your Amazon S3 bucket by checking the checkbox and clicking Delete:
+he Delete objects form page will load. Because a deleted object is not retrievable, AWS asks you to confirm that you want to delete the object before deletion.
+
+ 
+
+2. In the textbox at the bottom of the page, enter permanently delete and click Delete objects:
+3. To return to the bucket object view, at the top-right, click Close.
+4. Click Upload, then Add files and browse to the logo file (or drag-and-drop it into the Upload wizard) in order to upload it again.
+5. Near the bottom of the page, expand the Properties section:
+6. Scroll down to the Metadata section and click Add metadata:
+A row of form elements will appear.
+7. Enter the following:
+
+Type: Select System defined
+Key: Select Content-Type
+Value: Enter text/plain
+
+The drop-down list contains the System metadata that you can set.
+
+In this lab, you have set the content type to text/plain as an example to see how to add metadata to an object when uploading to Amazon S3.
+
+Next you will add custom user metadata. User metadata must be prefaced with "x-amz-meta-". The remaining instructions will add a custom user type for imagetype, and imagestatus.
+
+8. Click Add metadata again to add another row. 
+
+9. Enter the following to define custom metadata:
+
+Type: Select User defined
+Key: Enter imagetype after x-amz-meta
+Value: Enter logo
+
+ou have added two metadata key-value pairs to the object you are going to upload. One system metadata and one user-defined.
+
+ 
+
+10. At the bottom of the page, click Upload:
+
+11. To exit the upload form, at the top-right, click Close.
+
+ 
+
+12. In the Objects table click the cloudacademy-logo.png object:
+
+13. Scroll down to the Metadata section and observe the key-value pairs you added:
+
+This is also where you can add, remove, and edit metadata after you have uploaded objects to Amazon S3.
+n this lab step, you added custom system and user metadata to an object in your S3 bucket.
+
+Custom metadata can be useful. For example, your application could search a specific folder in your S3 bucket for all PNG images that are not "current" (based on custom user metadata), and generate a notification stating there are images that need to be updated.
+
+Deleting an Amazon S3 Bucket:
+==============================
+From the top level of the S3 console, notice the Delete button is not actionable.
+
+ 
+
+2. Check the name of your bucket to select it:
+3. With the bucket selected, click Empty:
+The Empty bucket form page will load.
+
+It's not possible to delete a bucket that contains objects.
+
+ 
+
+4. To confirm that you want to delete all objects in this bucket, in the textbox at the bottom, enter permanently delete and click Empty:
+5. To exit the empty bucket page, at the top-right, click Exit:
+You will be returned to the Buckets page.
+
+ 
+
+6. To delete your bucket, select it in the list, and click Delete
+7. To confirm that you want to delete the bucket, in the textbox, enter the name of your bucket:
+8. Click Delete bucket to delete the bucket.
+
+Warning: Make sure to delete all the files/folders inside the bucket before deleting it, otherwise AWS won't allow you to delete the S3 bucket.
+
+Important! Notice the message from AWS: "Amazon S3 buckets are unique. If you delete this bucket, you may lose the bucket name to another AWS user."
+
+If retaining the bucket name is important to you, consider using the Empty bucket feature and not actually deleting the bucket.
+
